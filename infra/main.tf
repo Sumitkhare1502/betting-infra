@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_security_group" "sg" {
-  name = "betting-sg"
+  name = "betting-sg11"
 
   ingress {
     from_port   = 22
