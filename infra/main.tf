@@ -2,10 +2,13 @@ provider "aws" {
   region = "ap-south-1"
 }
 
-resource "aws_security_group" "sg" {
-  name = "betting-sg-final"
+# Security Group
+resource "aws_security_group" "betting_sg" {
+  name        = "betting-sg-final"
+  description = "Allow SSH and App ports"
 
   ingress {
+    description = "SSH"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -13,6 +16,7 @@ resource "aws_security_group" "sg" {
   }
 
   ingress {
+    description = "Frontend (React)"
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
@@ -20,6 +24,7 @@ resource "aws_security_group" "sg" {
   }
 
   ingress {
+    description = "Backend (Node)"
     from_port   = 5000
     to_port     = 5000
     protocol    = "tcp"
@@ -27,20 +32,26 @@ resource "aws_security_group" "sg" {
   }
 
   egress {
+    description = "Allow all outbound"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    Name = "betting-sg-final"
+  }
 }
 
-resource "aws_instance" "ec2" {
-  ami           = "ami-0f58b397bc5c1f2e8"
-  instance_type = "t3.micro"
+# EC2 Instance
+resource "aws_instance" "betting_ec2" {
+  ami           = "ami-0f58b397bc5c1f2e8"  # Amazon Linux (Mumbai)
+  instance_type = "t3.micro"               # chargeable if not free tier
 
-  key_name = "betting-key"   # ⚠️ वही नाम जो AWS में बनाया
+  key_name = "betting-key"  # ⚠️ must exist in AWS
 
-  vpc_security_group_ids = [aws_security_group.sg.id]
+  vpc_security_group_ids = [aws_security_group.betting_sg.id]
 
   tags = {
     Name = "Betting-App-Server"
