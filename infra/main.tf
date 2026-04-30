@@ -4,7 +4,7 @@ provider "aws" {
 
 # Security Group
 resource "aws_security_group" "betting_sg" {
-  name        = "betting-sg-final"
+  name        = "betting-sg1-final"
   description = "Allow SSH and App ports"
 
   ingress {
@@ -40,7 +40,7 @@ resource "aws_security_group" "betting_sg" {
   }
 
   tags = {
-    Name = "betting-sg-final"
+    Name = "betting-sg1-final"
   }
 }
 
